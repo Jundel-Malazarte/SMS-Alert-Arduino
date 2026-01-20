@@ -1,0 +1,84 @@
+# 🌿 Greenhouse Monitoring System with SMS Alerts
+
+## PROTOTYPE DEVELOPMENT OF A MICROCONTROLLER-BASED GREENHOUSE MONITORING SYSTEM WITH VISUAL SMS ALERTS
+
+### Project Overview
+
+This project is a research-based prototype designed to automate greenhouse environment monitoring. Using an Arduino Uno, the system tracks ambient temperature, humidity, and soil chemistry (NPK, pH, EC). If environmental conditions exceed safety thresholds, the system triggers **Visual Alerts** via onboard LEDs and sends a **Critical SMS Alert** via the SIM800L GSM module.
+
+---
+
+## 🛠 Hardware Components
+
+| Item Code | Component | Quantity | Purpose |
+|-----------|-----------|----------|---------|
+| MLE00007 | Arduino Uno R3 (CH340G) | 1 | Main Controller |
+| MLE00602 | SIM800L V2 5V GSM Module | 1 | SMS Communication |
+| MLE00559 | DHT22 Sensor Module | 1 | Air Temp/Humidity |
+| MLE05242 | 5-Pin RS485 Soil Probe | 1 | NPK, pH, EC, Moisture |
+| MLE00584 | Soil Moisture Sensor | 1 | Secondary Soil Check |
+| MLE00100 | 16x2 LCD Display (I2C) | 1 | Local Visual Interface |
+| - | MAX485 TTL to RS485 | 1 | (Required) Interface for Probe |
+| MLE07252 | Red / Green / Yellow LEDs | 30 | Status Indicators |
+| - | 220Ω Resistors | 10+ | LED Protection |
+
+---
+
+## 💻 Software Setup
+
+### 1. Required Libraries
+
+Install these via the Arduino IDE Library Manager (Ctrl+Shift+I):
+
+- **DHT sensor library** by Adafruit
+- **LiquidCrystal I2C** by Frank de Brabander
+- **SoftwareSerial** (Built-in)
+- **ModbusMaster** (For the RS485 Probe)
+
+### 2. Arduino IDE Configuration
+
+1. Connect your Arduino Uno via the USB Type A to B cable [MLE01112]
+2. Go to **Tools > Board** and select **Arduino Uno**
+3. Go to **Tools > Port** and select the COM port (e.g., COM3)
+
+---
+
+## 🧪 Testing Procedures
+
+### Step 1: GSM Network Test
+
+Before uploading the full code, ensure your SIM800L is registered:
+
+- Insert a micro-SIM card (ensure it has load/balance)
+- Power the module. The Blue LED should blink
+- **Success**: A slow blink (once every 3 seconds) means it is connected to the network
+
+### Step 2: Serial Monitor Debugging
+
+1. Open the `sms-alert.ino` file
+2. Input your mobile number in the `PHONE_NUMBER` variable
+3. Click **Upload** (Arrow icon)
+4. Open the **Serial Monitor** (Ctrl+Shift+M) at 9600 baud
+5. Watch the readings. If you blow on the DHT22 sensor to increase heat, look for the "Sending SMS..." message in the monitor
+
+### Step 3: Visual Confirmation
+
+- **Green LED**: Should stay lit when parameters are normal
+- **Red LED**: Should blink when an SMS is being transmitted
+- **LCD**: Check if the text is clear. If not, turn the small blue potentiometer on the back of the I2C module to adjust contrast
+
+---
+
+## ⚠️ Critical Safety Notes
+
+### Power Supply
+The SIM800L V2 and the RS485 Probe should be powered by a **5V 2A** or **12V adapter** (depending on the probe specs). Powering everything through the Arduino USB port alone may cause the GSM module to fail during SMS transmission.
+
+### Grounding
+Ensure all components share a **Common Ground (GND)** to prevent data corruption.
+
+---
+
+## 📜 License
+
+This project is developed for academic research purposes.
